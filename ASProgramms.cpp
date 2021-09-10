@@ -86,15 +86,24 @@ int new_brut () {
 
 //Создание рандомного названия/имени для чего либо
 int random_name () {
+    //Генератор по времени
     srand(time(0));
-    cout << "Сколько имён/названий вам надо?" << endl;
+    //Максимальная длинна
+    cout << "Введите максимальную длинну имя:" << endl;
+    int max_length;
+    cin >> max_length;
+    //Количество имён
+    cout << "Введите количество имён:" << endl;
     int num;
     cin >> num;
-    cout << "Куда вывести имена/названия?" << endl << "1. Консоль" << endl << "2. Файл" << endl;
-    int v;
-    cin >> v;
-    //База символов
-    char sg[21], gl[6];
+    //Выбор вывода
+    cout << "Выберите вариант вывода:" << endl;
+    cout << "1. Консоль" << endl;
+    cout << "2. Файл" << endl;
+    bool choice;
+    cin >> choice;
+    //База согласных и гласных
+    string gl[6],sg[24];
     //Согласные
     sg[0]='b';
     sg[1]='c';
@@ -117,6 +126,9 @@ int random_name () {
     sg[18]='x';
     sg[19]='y';
     sg[20]='z';
+    sg[21]="th";
+    sg[22]="ch";
+    sg[23]="zh";
     //Гласные
     gl[0]='a';
     gl[1]='e';
@@ -124,56 +136,49 @@ int random_name () {
     gl[3]='o';
     gl[4]='u';
     gl[5]='y';
-    //o - это switch
-    bool o=0;
-    //Алгоритмы (консоль/файл) по генерации названия/имени
-    if (v==1) {
-        for (int i=0, l;i<num;i++) {
-            if (rand()%2==0) {
-                o=1;
+    //Генератор
+    bool o = 0;
+    if (choice == 0) {
+        //Консоль
+        for (int i = 0, l = 0; i < num; i++) {
+            o = rand() % 2;
+            while (l < 3) {
+                l = rand() % (max_length + 1);
             }
-            else {
-                o=0;
-            }
-            while (l<=3) {
-                l=rand()%10;
-            }
-            for (int j=0;j<l;j++) {
-                if (o==0) {
-                    o=1;
-                    cout << gl[rand()%6];
+            for (int j = 0; j < l; j++) {
+                if (o == 0) {
+                    cout << sg[rand() % 24];
+                    o = 1;
                 }
                 else {
-                    o=0;
-                    cout << sg[rand()%21];
+                    cout << gl[rand() % 6];
+                    o = 0;
                 }
             }
             cout << endl;
+            l = 0;
         }
     }
     else {
+        //Файл
         ofstream file("Names.txt");
-        for (int i=0, l;i<num;i++) {
-            if (rand()%2==0) {
-                o=1;
+        for (int i = 0, l = 0; i < num; i++) {
+            o = rand() % 2;
+            while (l < 3) {
+                l = rand() % (max_length + 1);
             }
-            else {
-                o=0;
-            }
-            while (l<=3) {
-                l=rand()%10;
-            }
-            for (int j=0;j<l;j++) {
-                if (o==0) {
-                    o=1;
-                    file << gl[rand()%6];
+            for (int j = 0; j < l; j++) {
+                if (o == 0) {
+                    file << sg[rand() % 24];
+                    o = 1;
                 }
                 else {
-                    o=0;
-                    file << sg[rand()%21];
+                    file << gl[rand() % 6];
+                    o = 0;
                 }
             }
             file << endl;
+            l = 0;
         }
         file.close();
     }
@@ -221,7 +226,7 @@ int main () {
     setlocale(LC_ALL, "Rus");
     cout << "Добро пожаловать в ASProgramms" << endl << "Выберите что хотите запускать:" << endl;
     cout << "1. New Brut (0.1)" << endl;
-    cout << "2. RandomName (0.2)" << endl;
+    cout << "2. RandomName (0.6)" << endl;
     cout << "3. GPassword (0.1)" << endl;
     int z;
     cin >> z;
